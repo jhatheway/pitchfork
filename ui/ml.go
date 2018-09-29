@@ -125,7 +125,6 @@ func h_ml_list(cui PfUI) {
 	var username string
 	username = ""
 	template := "ml/list.tmpl"
-	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 	grp := cui.SelectedGroup()
 
 	if cui.HasSelectedUser() {
@@ -157,21 +156,13 @@ func h_ml_list(cui PfUI) {
 	/* Output the page */
 	type Page struct {
 		*PfPage
-		PageSize    int
-		LastPage    int
 		Username  string
 		GroupName string
 		MLs       []pf.PfML
 		Admin     bool
 	}
 
-	menu := NewPfUIMenu([]PfUIMentry{
-		{"new/", "New Mailing List", PERM_GROUP_ADMIN, h_ml_new, nil},
-	})
-
-	cui.SetPageMenu(&menu)
-
-	p := Page{cui.Page_def(), pageSize, 0, username, grp.GetGroupName(), mls, admin}
+	p := Page{cui.Page_def(), username, grp.GetGroupName(), mls, admin}
 	cui.Page_show(template, p)
 }
 
@@ -372,7 +363,6 @@ func h_ml_unsubscribe(cui PfUI) {
 func h_ml(cui PfUI) {
 	path := cui.GetPath()
 	if len(path) == 0 || path[0] == "" {
-		cui.SetPageMenu(nil)
 		h_ml_list(cui)
 		return
 	}
@@ -405,13 +395,16 @@ func h_ml(cui PfUI) {
 
 	cui.SetPath(path[1:])
 
-	menu := NewPfUIMenu([]PfUIMentry{
-		{"", "", PERM_GROUP_MEMBER, h_ml_members, nil},
-		{"settings", "Settings", PERM_GROUP_ADMIN, h_ml_settings, nil},
-		{"subscribe", "Subscribe", PERM_GROUP_MEMBER, h_ml_subscribe, nil},
-		{"unsubscribe", "Unsubscribe", PERM_GROUP_MEMBER, h_ml_unsubscribe, nil},
-		{"pgp", "PGP Key", PERM_GROUP_MEMBER, h_ml_pgp, nil},
-	})
-
-	cui.UIMenu(menu)
+	switch path[1] {
+	case "settings":
+		h_ml_settings(cui)
+	case "pgp":
+		h_ml_pgp(cui)
+	case "subscribe":
+		h_ml_subscribe(cui)
+	case "unsubscribe":
+		h_ml_unsubscribe(cui)
+	default:
+		h_ml_members(cui)
+	}
 }

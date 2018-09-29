@@ -1,7 +1,13 @@
 {{template "inc/header.tmpl" .}}
+	<p>
+		{{ if .Admin }}
+		<a class="fakebutton" href="settings">Settings</a>
+		{{ end }}
+		<a class="fakebutton" href="pgp">PGP Key</a>
+	</p>
 
 	<p>
-		Following is a list of the member of the <b>{{ .GroupName }}</b> group's <b>{{ .ML.ListName }}</b> Mailing List.
+		Following is a list of the members of the <b>{{ .GroupName }}</b> group's <b>{{ .ML.ListName }}</b> Mailing List.
 	</p>
 
 {{template "inc/search.tmpl" .}}
