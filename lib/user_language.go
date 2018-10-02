@@ -17,7 +17,9 @@ func (ul *PfUserLanguage) toString() (out string) {
 	return
 }
 
-func (user *PfUserS) GetLanguages() (output []PfUserLanguage, err error) {
+
+
+func GetUserLanguages(username string) (output []PfUserLanguage, err error) {
 	q := "SELECT " +
 		"mls.language, " +
 		"l.name, " +
@@ -26,7 +28,7 @@ func (user *PfUserS) GetLanguages() (output []PfUserLanguage, err error) {
 		"FROM member_language_skill mls " +
 		"INNER JOIN languages l ON mls.language = l.iso_639_1 " +
 		"AND mls.member = $1"
-	rows, err := DB.Query(q, user.GetUserName())
+	rows, err := DB.Query(q, username)
 	if err != nil {
 		return
 	}
@@ -48,6 +50,10 @@ func (user *PfUserS) GetLanguages() (output []PfUserLanguage, err error) {
 	}
 
 	return
+}
+
+func (user *PfUserS) GetLanguages() (output []PfUserLanguage, err error) {
+	return GetUserLanguages(user.GetUserName())
 }
 
 func LanguageSkillList() (languageskill []string) {
