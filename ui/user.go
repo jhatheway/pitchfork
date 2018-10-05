@@ -446,6 +446,7 @@ func h_user_log(cui PfUI) {
 }
 
 func h_user_list(cui PfUI) {
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 	if !cui.IsSysAdmin() {
 		/* Non-SysAdmin can only see their own page */
 		cui.SetRedirect("/user/"+cui.TheUser().GetUserName()+"/", StatusSeeOther)
@@ -478,13 +479,15 @@ func h_user_list(cui PfUI) {
 	type Page struct {
 		*PfPage
 		Users       []pf.PfUser
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
 	}
 
 	cui.SetPageMenu(nil)
-	p := Page{cui.Page_def(), users, offset, total, search}
+	p := Page{cui.Page_def(), users, pageSize, total/pageSize, offset, total, search}
 	cui.Page_show("user/list.tmpl", p)
 }
 

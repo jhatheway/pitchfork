@@ -1,35 +1,68 @@
 <p>
+	<fieldset><table><tr><td>
 	{{ if pager_less_ok .PagerOffset }}
-	{{ csrf_form $.UI "" }}
-		<fieldset>
-			<ul>
-				<li>
-					{{ if .Search }}
-						<input type="hidden" name="search" value="{{ .Search }}" />
-					{{ end }}
-					<input type="hidden" name="offset" value="{{ pager_less .PagerOffset }}" />
-					<input id="button" type="submit" name="button" value="Back" />
-				</li>
-			</ul>
-		</fieldset>
-	</form>
+		{{ csrf_form $.UI "" }}
+			{{ if .Search }}
+				<input type="hidden" name="search" value="{{ .Search }}" />
+			{{ end }}
+			<input type="hidden" name="offset" value="{{ 0 }}" />
+			<input id="button" type="submit" name="button" value="<< First" />
+		</form>
+	{{ else }}
+		<form class="styled_form">
+			<input type="submit" name="button" value="<< First" disabled />
+		</form>
+	{{ end }}
+	</td>
 
+	<td>
+	{{ if pager_less_ok .PagerOffset }}
+		{{ csrf_form $.UI "" }}
+			{{ if .Search }}
+				<input type="hidden" name="search" value="{{ .Search }}" />
+			{{ end }}
+			<input type="hidden" name="offset" value="{{ pager_less .PagerOffset }}" />
+			<input id="button" type="submit" name="button" value="< Back" />
+		</form>
+	{{ else }}
+		<form class="styled_form">
+			<input type="submit" name="button" value="< Back" disabled />
+		</form>
 	{{ end }}
+	</td>
+
+	<td>
 	{{ if pager_more_ok .PagerOffset .PagerTotal }}
-	{{ csrf_form $.UI "" }}
-		<fieldset>
-			<ul>
-				<li>
-					{{ if .Search }}
-						<input type="hidden" name="search" value="{{ .Search }}" />
-					{{ end }}
-					<input type="hidden" name="offset" value="{{ pager_more .PagerOffset .PagerTotal }}" />
-					<input id="button" type="submit" name="button" value="Forward" />
-				</li>
-			</ul>
-		</fieldset>
-	</form>
+		{{ csrf_form $.UI "" }}
+			{{ if .Search }}
+				<input type="hidden" name="search" value="{{ .Search }}" />
+			{{ end }}
+			<input type="hidden" name="offset" value="{{ pager_more .PagerOffset .PagerTotal }}" />
+			<input id="button" type="submit" name="button" value="Forward >" />
+		</form>
+	{{ else }}
+		<form class="styled_form">
+			<input type="submit" name="button" value="Forward >" disabled />
+		</form>
 	{{ end }}
+	</td>
+
+	<td>
+	{{ if pager_more_ok .PagerOffset .PagerTotal }}
+		{{ csrf_form $.UI "" }}
+			{{ if .Search }}
+				<input type="hidden" name="search" value="{{ .Search }}" />
+			{{ end }}
+			<input type="hidden" name="offset" value="{{ .LastPage }}" />
+			<input id="button" type="submit" name="button" value="Last >>" />
+		</form>
+
+	{{ else }}
+		<form class="styled_form">
+			<input type="submit" name="button" value="Last >>" disabled />
+		</form>
+	{{ end }}
+	</td></tr></table></fieldset>
 </p>
 <p>
 	Offset: {{ .PagerOffset }}, Total: {{ .PagerTotal }}

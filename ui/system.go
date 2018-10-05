@@ -44,6 +44,7 @@ func h_system_logA(cui PfUI, user_name string, tg_name string) {
 
 	total := 0
 	offset := 0
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	offset_v, err := cui.FormValue("offset")
 	if err == nil && offset_v != "" {
@@ -57,7 +58,7 @@ func h_system_logA(cui PfUI, user_name string, tg_name string) {
 
 	var audits []pf.PfAudit
 	total, _ = pf.System_AuditMax(search, user_name, tg_name)
-	audits, err = pf.System_AuditList(search, user_name, tg_name, offset, 10)
+	audits, err = pf.System_AuditList(search, user_name, tg_name, offset, pageSize)
 	if err != nil {
 		cui.Err(err.Error())
 		return
@@ -67,12 +68,19 @@ func h_system_logA(cui PfUI, user_name string, tg_name string) {
 	type Page struct {
 		*PfPage
 		Audits      []pf.PfAudit
+
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
 	}
 
-	p := Page{cui.Page_def(), audits, offset, total, search}
+	/* This math is a bit odd because we depend on the math truncaction. Imagine we're going to the last
+	   page of a group of 14 entries, and each page is 4 entries. 14/4 is 3 (truncated). 4*3 gives an offset of 12,
+	   the last page of entries 12-14 */
+	lastPage := (total/pageSize) * pageSize
+	p := Page{cui.Page_def(), audits, pageSize, lastPage, offset, total, search}
 	cui.Page_show("system/log.tmpl", p)
 }
 

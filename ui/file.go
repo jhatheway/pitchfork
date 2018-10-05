@@ -14,6 +14,7 @@ func h_file_history(cui PfUI) {
 
 	total := 0
 	offset := 0
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	offset_v, err := cui.FormValue("offset")
 	if err == nil && offset_v != "" {
@@ -35,13 +36,15 @@ func h_file_history(cui PfUI) {
 	/* Output the page */
 	type Page struct {
 		*PfPage
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
 		Revs        []pf.PfFile
 	}
 
-	p := Page{cui.Page_def(), offset, total, "", revs}
+	p := Page{cui.Page_def(), pageSize, total/pageSize, offset, total, "", revs}
 	cui.Page_show("file/history.tmpl", p)
 }
 
@@ -64,6 +67,7 @@ func h_file_list_dir(cui PfUI) {
 
 	total := 0
 	offset := 0
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	offset_v, err := cui.FormValue("offset")
 	if err == nil && offset_v != "" {
@@ -87,13 +91,15 @@ func h_file_list_dir(cui PfUI) {
 	/* Output the page */
 	type Page struct {
 		*PfPage
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
 		Paths       []pf.PfFile
 	}
 
-	p := Page{cui.Page_def(), offset, total, "", paths}
+	p := Page{cui.Page_def(), pageSize, total/pageSize, offset, total, "", paths}
 	cui.Page_show("file/list.tmpl", p)
 }
 
