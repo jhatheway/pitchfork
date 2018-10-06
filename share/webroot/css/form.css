@@ -57,7 +57,7 @@
 	float			: left;
 }
 
-.styled_form input, .styled_form .fakebutton
+.styled_form input, .fakebutton
 {
 	min-width		: 42em;
 	min-height		: 2em;
@@ -89,13 +89,13 @@
 	padding-right		: 0px;
 }
 
-.styled_form input[type=submit], .fakebutton
+.styled_form input[type=submit], .styled_form button, .fakebutton 
 {
 	font-size		: 100%;
 }
 
 /* form element visual styles */
-.styled_form input, .styled_form textarea, .fakebutton
+.styled_form input, .styled_form textarea, .styled_form button, .fakebutton
 {
 	border			: 1px solid #aaa;
 	box-shadow		: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
@@ -246,7 +246,7 @@ form.styled_form li span.error
 	          user-select	: none;
 }
 
-.styled_form input[type=submit], .fakebutton
+.styled_form input[type=submit], .styled_form button, .fakebutton
 {
 	border-radius		: 3px;
 	-webkit-border-radius	: 3px;
@@ -265,7 +265,7 @@ form.styled_form li span.error
 	text-shadow		: 0 -1px 0 #396715;
 }
 
-.styled_form input[type=submit], .fakebutton
+.styled_form input[type=submit], .styled_form button, .fakebutton
 {
 	background-color	: #68b12f;
 	background		: -webkit-gradient(linear, left top, left bottom, from(#68b12f), to(#50911e));
@@ -289,7 +289,7 @@ input:disabled, input:read-only
 	-o-box-shadow		: none;
 }
 
-.styled_form input[type=submit]:disabled, a.fakebutton.disabled, a.fakebutton.disabled:hover
+.styled_form input[type=submit]:disabled, .styled_form button:disabled, a.fakebutton.disabled, a.fakebutton.disabled:hover
 {
 	background-color	: #eeeeee;
 	background		: -webkit-gradient(linear, left top, left bottom, from(#aaaaaa), to(#911e0d));
@@ -347,7 +347,7 @@ a.fakebutton, a.fakebutton a:visited, a.fakebutton:hover
 	border-bottom		: none;
 }
 
-input[type=submit]:active, .fakebutton:active
+input[type=submit]:active, .styled_form button:active, .fakebutton:active
 {
 	border			: 1px solid #20911e;
 	box-shadow		: 0 0 10px 5px #356b0b inset;
