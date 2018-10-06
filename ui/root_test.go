@@ -18,7 +18,7 @@ func TestUI_Main_Misc(t *testing.T) {
 			http.StatusOK, []string{}, []string{}},
 
 		/* Missing pages check */
-		urltest.URLTest_404("/404"),
+		urltest.URLTest_404("/gfx/404"),
 	}
 
 	/* Our Root */
