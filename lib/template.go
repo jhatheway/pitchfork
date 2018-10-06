@@ -48,6 +48,14 @@ func Template_Get() *template.Template {
 	return g_tmp
 }
 
+/* Pager related helper function - calculate the offest for the "last" page */
+func Template_Pager_LastPage(total int, pageSize int) int {
+	/* This math is a bit odd because we depend on the math truncaction. Imagine we're going to the last
+	   page of a group of 14 entries, and each page is 4 entries. 14/4 is 3 (truncated). 4*3 gives an offset of 12,
+	   the last page of entries 12-14 */
+	return (total/pageSize) * pageSize
+}
+
 /* Template Functions - used from inside the templates */
 func tmp_pager_less_ok(cur int) bool {
 	return cur >= PAGER_PERPAGE

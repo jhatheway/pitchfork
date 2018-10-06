@@ -76,11 +76,7 @@ func h_system_logA(cui PfUI, user_name string, tg_name string) {
 		Search      string
 	}
 
-	/* This math is a bit odd because we depend on the math truncaction. Imagine we're going to the last
-	   page of a group of 14 entries, and each page is 4 entries. 14/4 is 3 (truncated). 4*3 gives an offset of 12,
-	   the last page of entries 12-14 */
-	lastPage := (total/pageSize) * pageSize
-	p := Page{cui.Page_def(), audits, pageSize, lastPage, offset, total, search}
+	p := Page{cui.Page_def(), audits, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, search}
 	cui.Page_show("system/log.tmpl", p)
 }
 

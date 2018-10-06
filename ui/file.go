@@ -44,7 +44,7 @@ func h_file_history(cui PfUI) {
 		Revs        []pf.PfFile
 	}
 
-	p := Page{cui.Page_def(), pageSize, total/pageSize, offset, total, "", revs}
+	p := Page{cui.Page_def(), pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, "", revs}
 	cui.Page_show("file/history.tmpl", p)
 }
 
@@ -99,7 +99,7 @@ func h_file_list_dir(cui PfUI) {
 		Paths       []pf.PfFile
 	}
 
-	p := Page{cui.Page_def(), pageSize, total/pageSize, offset, total, "", paths}
+	p := Page{cui.Page_def(), pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, "", paths}
 	cui.Page_show("file/list.tmpl", p)
 }
 

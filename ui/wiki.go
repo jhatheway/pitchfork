@@ -199,7 +199,7 @@ func h_wiki_history(cui PfUI) {
 		Revs        []pf.PfWikiRev
 	}
 
-	p := Page{cui.Page_def(), pageSize, total/pageSize, offset, total, "", revs}
+	p := Page{cui.Page_def(), pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, "", revs}
 	cui.Page_show("wiki/history.tmpl", p)
 }
 
@@ -250,7 +250,7 @@ func h_wiki_search(cui PfUI) {
 
 	mopts := pf.Wiki_GetModOpts(cui)
 	opt := popt{search, ""}
-	p := Page{cui.Page_def(), opt, pageSize, total/pageSize, offset, total, mopts.URLroot, res}
+	p := Page{cui.Page_def(), opt, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, mopts.URLroot, res}
 	cui.Page_show("wiki/search.tmpl", p)
 }
 
@@ -293,7 +293,7 @@ func h_wiki_children(cui PfUI) {
 		Paths       []pf.PfWikiPage
 	}
 
-	p := Page{cui.Page_def(), pageSize, total/pageSize, offset, total, "", wikis}
+	p := Page{cui.Page_def(), pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, "", wikis}
 	cui.Page_show("wiki/children.tmpl", p)
 }
 

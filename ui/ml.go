@@ -229,7 +229,8 @@ func h_ml_members(cui PfUI) {
 	if cui.IsSysAdmin() || cui.IAmGroupAdmin() {
 		admin = true
 	}
-	p := Page{cui.Page_def(), sel_grp.GetGroupName(), admin, sel_ml, members, pageSize, total/pageSize, offset, total, search, admin}
+
+	p := Page{cui.Page_def(), sel_grp.GetGroupName(), admin, sel_ml, members, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, search, admin}
 	cui.Page_show("ml/members.tmpl", p)
 }
 

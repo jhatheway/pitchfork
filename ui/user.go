@@ -487,7 +487,7 @@ func h_user_list(cui PfUI) {
 	}
 
 	cui.SetPageMenu(nil)
-	p := Page{cui.Page_def(), users, pageSize, total/pageSize, offset, total, search}
+	p := Page{cui.Page_def(), users, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, search}
 	cui.Page_show("user/list.tmpl", p)
 }
 

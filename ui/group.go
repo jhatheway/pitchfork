@@ -135,7 +135,7 @@ func h_group_member(cui PfUI) {
 	}
 
 	isadmin := cui.IAmGroupAdmin()
-	p := Page{cui.Page_def(), grp, members, pageSize, total/pageSize, offset, total, search, isadmin}
+	p := Page{cui.Page_def(), grp, members, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, search, isadmin}
 	cui.Page_show("group/members.tmpl", p)
 }
 
