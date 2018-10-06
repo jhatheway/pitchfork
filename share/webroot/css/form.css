@@ -57,7 +57,7 @@
 	float			: left;
 }
 
-.styled_form input, .fakebutton
+.styled_form input, .styled_form .fakebutton
 {
 	min-width		: 42em;
 	min-height		: 2em;
