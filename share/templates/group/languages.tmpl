@@ -20,16 +20,18 @@
 	<thead>
 		<th>Username</th>
 		<th>Full name</th>
+		<th>Language Skill</th>
 		<th>Affiliation</th>
 		<th>Email</th>
 		<th>Telephone</th>
 		<th>SMS</th>
 	</thead>
 	<tbody>
-	{{range $i, $grpm := .Members}}
+	{{range $grpm, $skill := .Members}}
 	<tr>
 		<td>{{ $grpm.GetUserName }}</td>
 		<td>{{ $grpm.GetFullName }}</td>
+		<td>{{ $skill }}</td>
 		<td>{{ $grpm.GetAffiliation }}</td>
 		<td>{{ $grpm.GetEmail }}</td>
 		<td>{{ $grpm.GetTel }}</td>

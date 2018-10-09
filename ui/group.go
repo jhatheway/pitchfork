@@ -370,7 +370,7 @@ func h_group_languages(cui PfUI) {
 	}
 
 	countedLanguages := make(map[pf.PfLanguage]int)
-	var membersWhoUnderstand []pf.PfGroupMember
+	membersWhoUnderstand := make(map[pf.PfGroupMember]string)
 	/* First we need to go over all the group members, getting all the languages they know */
 	for _, m := range members {
 		languages, err := pf.GetUserLanguages(m.GetUserName())
@@ -388,7 +388,7 @@ func h_group_languages(cui PfUI) {
 				/* For the given language, if it matches what the user was filtering on (if
 				   a filter was given), then add that member to the list that we pass back */
 				if l.Language.Code == langSearchCode {
-					membersWhoUnderstand = append(membersWhoUnderstand, m)
+					membersWhoUnderstand[m] = l.Skill
 					langSearchName = l.Language.Name
 				}
 			}
@@ -400,7 +400,7 @@ func h_group_languages(cui PfUI) {
 		*PfPage
 		Language  string
 		Languages map[pf.PfLanguage]int
-		Members   []pf.PfGroupMember
+		Members   map[pf.PfGroupMember]string
 	}
 
 	p := Page{cui.Page_def(), langSearchName, countedLanguages, membersWhoUnderstand}
