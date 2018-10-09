@@ -7,15 +7,9 @@
 	<table><tr><td>
 	{{ if pager_less_ok .PagerOffset }}
 		<button type="submit" name="offset" value="{{ 0 }}">&lt;&lt; First</button> 
-	{{ else }}
-		<button disabled>&lt;&lt; First</button>
-	{{ end }}
-	</td>
-
-	<td>
-	{{ if pager_less_ok .PagerOffset }}
 		<button type="submit" name="offset" value="{{ pager_less .PagerOffset }}">&lt; Back</button>
 	{{ else }}
+		<button disabled>&lt;&lt; First</button>
 		<button disabled>&lt; Back</button>
 	{{ end }}
 	</td>
@@ -23,17 +17,12 @@
 	<td>
 	{{ if pager_more_ok .PagerOffset .PagerTotal }}
 		<button type="submit" name="offset" value="{{ pager_more .PagerOffset .PagerTotal }}">Forward &gt;</button>
-	{{ else }}
-		<button disabled>Forward &gt;</button>
-	{{ end }}
-	</td>
-
-	<td>
-	{{ if pager_more_ok .PagerOffset .PagerTotal }}
 		<button type="submit" name="offset" value="{{ .LastPage }}">Last &gt;&gt;</button>
 	{{ else }}
+		<button disabled>Forward &gt;</button>
 		<button disabled>Last &gt;&gt;</button>
 	{{ end }}
+	</td>
 	</td></tr></table></form>
 </p>
 <p>
