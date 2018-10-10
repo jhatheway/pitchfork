@@ -397,14 +397,39 @@ func h_ml(cui PfUI) {
 
 	switch path[1] {
 	case "settings":
-		h_ml_settings(cui)
+		ok, _ := cui.CheckPerms("h_ml", PERM_GROUP_ADMIN)
+		if ok {
+			h_ml_settings(cui)
+		} else {
+			H_NoAccess(cui)
+		}
 	case "pgp":
-		h_ml_pgp(cui)
+		ok, _ := cui.CheckPerms("h_ml", PERM_GROUP_MEMBER)
+		if ok {
+			h_ml_pgp(cui)
+		} else {
+			H_NoAccess(cui)
+		}
 	case "subscribe":
-		h_ml_subscribe(cui)
+		ok, _ := cui.CheckPerms("h_ml", PERM_GROUP_MEMBER)
+		if ok {
+			h_ml_subscribe(cui)
+		} else {
+			H_NoAccess(cui)
+		}
 	case "unsubscribe":
-		h_ml_unsubscribe(cui)
+		ok, _ := cui.CheckPerms("h_ml", PERM_GROUP_MEMBER)
+		if ok {
+			h_ml_unsubscribe(cui)
+		} else {
+			H_NoAccess(cui)
+		}
 	default:
-		h_ml_members(cui)
+		ok, _ := cui.CheckPerms("h_ml", PERM_GROUP_MEMBER)
+		if ok {
+			h_ml_members(cui)
+		} else {
+			H_NoAccess(cui)
+		}
 	}
 }

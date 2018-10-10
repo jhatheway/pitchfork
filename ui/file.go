@@ -447,14 +447,19 @@ func H_file(cui PfUI) {
 		sub = "?s=" + sub
 	}
 
-	switch sub {
-	case "?s=add_file":
-		h_file_add_file(cui)
-	case "?s=add_dir":
-		h_file_add_dir(cui)
-	case "?s=details":
-		h_file_details(cui)
-	default:
-		h_file_list(cui)
+	ok, _ := cui.CheckPerms("H_file", PERM_USER)
+	if ok {
+		switch sub {
+		case "?s=add_file":
+			h_file_add_file(cui)
+		case "?s=add_dir":
+			h_file_add_dir(cui)
+		case "?s=details":
+			h_file_details(cui)
+		default:
+			h_file_list(cui)
+		}
+	} else {
+		H_NoAccess(cui)
 	}
 }
