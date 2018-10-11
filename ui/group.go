@@ -139,10 +139,6 @@ func h_group_member(cui PfUI) {
 	cui.Page_show("group/members.tmpl", p)
 }
 
-func h_group_languages(cui PfUI) {
-	H_error(cui, StatusNotImplemented)
-}
-
 func h_group_cmd(cui PfUI) {
 	grp := cui.SelectedGroup()
 
@@ -364,6 +360,55 @@ func h_group_airports(cui PfUI) {
 	cui.Page_show("group/airports.tmpl", p)
 }
 
+func h_group_languages(cui PfUI) {
+	langSearchCode := cui.GetArg("language")
+	langSearchName := ""
+	grp := cui.SelectedGroup()
+
+	members, err := grp.ListGroupMembers("", "", 0, 0, false, false, false)
+	if err != nil {
+		H_errmsg(cui, err)
+		return
+	}
+
+	countedLanguages := make(map[pf.PfLanguage]int)
+	membersWhoUnderstand := make(map[pf.PfGroupMember]string)
+	/* First we need to go over all the group members, getting all the languages they know */
+	for _, m := range members {
+		languages, err := pf.GetUserLanguages(m.GetUserName())
+		if err != nil {
+			err.Error()
+		} else {
+			/* Then for each group member, count all the languages */
+			for _, l := range languages {
+				_, ok := countedLanguages[l.Language]
+				if !ok {
+					countedLanguages[l.Language] = 0
+				}
+				countedLanguages[l.Language]++
+
+				/* For the given language, if it matches what the user was filtering on (if
+				   a filter was given), then add that member to the list that we pass back */
+				if l.Language.Code == langSearchCode {
+					membersWhoUnderstand[m] = l.Skill
+					langSearchName = l.Language.Name
+				}
+			}
+		}
+	}
+
+	/* Output the page */
+	type Page struct {
+		*PfPage
+		Language  string
+		Languages map[pf.PfLanguage]int
+		Members   map[pf.PfGroupMember]string
+	}
+
+	p := Page{cui.Page_def(), langSearchName, countedLanguages, membersWhoUnderstand}
+	cui.Page_show("group/languages.tmpl", p)
+}
+
 func h_group_contacts_vcard(cui PfUI) {
 	grp := cui.SelectedGroup()
 
@@ -462,6 +507,7 @@ func h_group(cui PfUI) {
 		{"member", "Members", PERM_GROUP_MEMBER, h_group_member, nil},
 		{"pgp_keys", "PGP Keys", PERM_GROUP_MEMBER, h_group_pgp_keys, nil},
 		{"airports", "Airports", PERM_GROUP_MEMBER, h_group_airports, nil},
+		{"languages", "Languages", PERM_GROUP_MEMBER, h_group_languages, nil},
 		{"ml", "Mailing List", PERM_GROUP_MEMBER, h_ml, nil},
 		{"wiki", "Wiki", PERM_GROUP_WIKI, h_group_wiki, nil},
 		{"log", "Audit Log", PERM_GROUP_ADMIN, h_group_log, nil},
