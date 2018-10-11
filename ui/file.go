@@ -433,23 +433,11 @@ func file_edit_form(cui PfUI, path string) (err error) {
 func H_file(cui PfUI) {
 	/* URL of the page */
 	cui.SetSubPath("/" + cui.GetPathString())
-
 	for _, p := range cui.GetPath() {
 		cui.AddCrumb(p, p, "")
 	}
 
 	sub := cui.GetArg("s")
-
-	menu := NewPfUIMenu([]PfUIMentry{
-		{"", "", PERM_USER, h_file_list, nil},
-		{"?s=add_file", "Add File", PERM_USER, h_file_add_file, nil},
-		{"?s=add_dir", "Add Directory", PERM_USER, h_file_add_dir, nil},
-		{"?s=list", "List", PERM_USER, h_file_list, nil},
-		{"?s=details", "Details", PERM_USER | PERM_HIDDEN | PERM_NOCRUMB, h_file_details, nil},
-		/* TODO History & editing/revising files is not yet implemented */
-		/* TODO {"?s=history", "History", PERM_USER, h_file_history}, */
-		/* TODO {"?s=edit", "Edit", PERM_USER | PERM_HIDDEN, h_file_edit}, */
-	})
 
 	if sub == "list" {
 		sub = ""
@@ -459,5 +447,19 @@ func H_file(cui PfUI) {
 		sub = "?s=" + sub
 	}
 
-	cui.MenuPath(menu, &[]string{sub})
+	ok, _ := cui.CheckPerms("H_file", PERM_USER)
+	if ok {
+		switch sub {
+		case "?s=add_file":
+			h_file_add_file(cui)
+		case "?s=add_dir":
+			h_file_add_dir(cui)
+		case "?s=details":
+			h_file_details(cui)
+		default:
+			h_file_list(cui)
+		}
+	} else {
+		H_NoAccess(cui)
+	}
 }

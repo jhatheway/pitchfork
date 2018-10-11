@@ -64,4 +64,10 @@
 	</tr>
 	{{ end }}</table>
 
+	{{ if $.Admin }}
+	<p>
+		<a class="fakebutton" href="/group/{{ $group }}/ml/new/">New Mailing List</a>
+	</p>
+	{{ end }}
+
 {{template "inc/footer.tmpl" .}}

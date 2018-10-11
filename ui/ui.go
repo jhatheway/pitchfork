@@ -825,6 +825,17 @@ func (cui *PfUIS) Page_def() (p *PfPage) {
 
 	/* Generate Sub Menu from pagemenu */
 	menu := mainmenu.ToLinkCol(cui, 0)
+
+	/* If we are quite deep in a path (ie. /group/<groupname>/file/a/b/c/d) the page menu depth wasn't
+	   calculated properly. Calculating it here */
+	splitFn := func(c rune) bool {
+		return c == '/'
+	}
+	path := strings.FieldsFunc(cui.GetFullPath(), splitFn)
+	pathlen := len(path)
+	if pathlen > 2 {
+		cui.pagemenudepth = pathlen - 2
+	}
 	submenu := cui.pagemenu.ToLinkCol(cui, cui.pagemenudepth)
 
 	p = &PfPage{
