@@ -166,6 +166,7 @@ func h_wiki_history(cui PfUI) {
 	var revs []pf.PfWikiRev
 
 	path := cui.GetSubPath()
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	total := 0
 	offset := 0
@@ -190,13 +191,15 @@ func h_wiki_history(cui PfUI) {
 	/* Output the page */
 	type Page struct {
 		*PfPage
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
 		Revs        []pf.PfWikiRev
 	}
 
-	p := Page{cui.Page_def(), offset, total, "", revs}
+	p := Page{cui.Page_def(), pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, "", revs}
 	cui.Page_show("wiki/history.tmpl", p)
 }
 
@@ -205,6 +208,7 @@ func h_wiki_search(cui PfUI) {
 
 	total := 0
 	offset := 0
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	search, err := cui.FormValue("q")
 
@@ -236,6 +240,8 @@ func h_wiki_search(cui PfUI) {
 	type Page struct {
 		*PfPage
 		Search      popt
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		PathPrefix  string
@@ -244,7 +250,7 @@ func h_wiki_search(cui PfUI) {
 
 	mopts := pf.Wiki_GetModOpts(cui)
 	opt := popt{search, ""}
-	p := Page{cui.Page_def(), opt, offset, total, mopts.URLroot, res}
+	p := Page{cui.Page_def(), opt, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, mopts.URLroot, res}
 	cui.Page_show("wiki/search.tmpl", p)
 }
 
@@ -252,6 +258,7 @@ func h_wiki_children(cui PfUI) {
 	var wikis []pf.PfWikiPage
 
 	path := cui.GetSubPath()
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	total := 0
 	offset := 0
@@ -278,13 +285,15 @@ func h_wiki_children(cui PfUI) {
 	/* Output the page */
 	type Page struct {
 		*PfPage
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
 		Paths       []pf.PfWikiPage
 	}
 
-	p := Page{cui.Page_def(), offset, total, "", wikis}
+	p := Page{cui.Page_def(), pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, "", wikis}
 	cui.Page_show("wiki/children.tmpl", p)
 }
 

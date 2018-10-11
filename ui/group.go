@@ -85,6 +85,7 @@ func h_group_log(cui PfUI) {
 
 func h_group_member(cui PfUI) {
 	path := cui.GetPath()
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	if len(path) != 0 && path[0] != "" {
 		H_group_member_profile(cui)
@@ -125,6 +126,8 @@ func h_group_member(cui PfUI) {
 		*PfPage
 		Group       pf.PfGroup
 		Members     []pf.PfGroupMember
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
@@ -132,8 +135,7 @@ func h_group_member(cui PfUI) {
 	}
 
 	isadmin := cui.IAmGroupAdmin()
-
-	p := Page{cui.Page_def(), grp, members, offset, total, search, isadmin}
+	p := Page{cui.Page_def(), grp, members, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, search, isadmin}
 	cui.Page_show("group/members.tmpl", p)
 }
 

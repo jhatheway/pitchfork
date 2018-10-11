@@ -125,7 +125,7 @@ func h_ml_list(cui PfUI) {
 	var username string
 	username = ""
 	template := "ml/list.tmpl"
-
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 	grp := cui.SelectedGroup()
 
 	if cui.HasSelectedUser() {
@@ -157,6 +157,8 @@ func h_ml_list(cui PfUI) {
 	/* Output the page */
 	type Page struct {
 		*PfPage
+		PageSize    int
+		LastPage    int
 		Username  string
 		GroupName string
 		MLs       []pf.PfML
@@ -169,12 +171,13 @@ func h_ml_list(cui PfUI) {
 
 	cui.SetPageMenu(&menu)
 
-	p := Page{cui.Page_def(), username, grp.GetGroupName(), mls, admin}
+	p := Page{cui.Page_def(), pageSize, 0, username, grp.GetGroupName(), mls, admin}
 	cui.Page_show(template, p)
 }
 
 func h_ml_members(cui PfUI) {
 	var ml pf.PfML
+	pageSize := pf.PAGER_PERPAGE /* TODO: Eventually I'd like this to come in from a parameter */
 
 	sel_grp := cui.SelectedGroup()
 	sel_ml := cui.SelectedML()
@@ -214,6 +217,8 @@ func h_ml_members(cui PfUI) {
 		GroupAdmin  bool
 		ML          pf.PfML
 		Members     []pf.PfMLUser
+		PageSize    int
+		LastPage    int
 		PagerOffset int
 		PagerTotal  int
 		Search      string
@@ -225,7 +230,7 @@ func h_ml_members(cui PfUI) {
 		admin = true
 	}
 
-	p := Page{cui.Page_def(), sel_grp.GetGroupName(), admin, sel_ml, members, offset, total, search, admin}
+	p := Page{cui.Page_def(), sel_grp.GetGroupName(), admin, sel_ml, members, pageSize, pf.Template_Pager_LastPage(total, pageSize), offset, total, search, admin}
 	cui.Page_show("ml/members.tmpl", p)
 }
 
