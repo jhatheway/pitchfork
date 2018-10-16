@@ -101,7 +101,7 @@ func (db *PfDB) Init(verbosity bool) {
 	db.sql = nil
 
 	/* Current portal_schema_version -- must match schema.sql! */
-	db.version = 22
+	db.version = 23
 
 	/* No configured App DB */
 	db.appversion = -1

@@ -35,13 +35,15 @@ type PfGroup interface {
 }
 
 type PfGroupS struct {
-	GroupName    string `label:"Group Name" pfset:"nobody" pfget:"group_member" pfcol:"ident"`
-	GroupDesc    string `label:"Description" pfcol:"descr" pfset:"group_admin"`
-	PGP_Required bool   `label:"PGP Required" pfset:"group_admin"`
-	Has_Wiki     bool   `label:"Wiki Module" pfset:"group_admin"`
-	Has_File     bool   `label:"Files Module" pfset:"group_admin"`
-	Has_Calendar bool   `label:"Calendar Module" pfset:"group_admin"`
-	Button       string `label:"Update Group" pftype:"submit"`
+	GroupName              string `label:"Group Name" pfset:"nobody" pfget:"group_member" pfcol:"ident"`
+	GroupDesc              string `label:"Description" pfcol:"descr" pfset:"group_admin"`
+	PGP_Required           bool   `label:"PGP Required" pfset:"group_admin"`
+	Second_Factor_Required bool   `label:"Second Factor Authentication (2FA) Required" pfset:"group_admin"`
+	Encryption_Required    bool   `label:"Encryption Required" pfset:"group_admin"`
+	Has_Wiki               bool   `label:"Wiki Module" pfset:"group_admin"`
+	Has_File               bool   `label:"Files Module" pfset:"group_admin"`
+	Has_Calendar           bool   `label:"Calendar Module" pfset:"group_admin"`
+	Button                 string `label:"Update Group" pftype:"submit"`
 }
 
 type PfMemberState struct {
